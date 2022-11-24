@@ -256,7 +256,10 @@ class CityRev1RadixTree(RadixTree):
 
             nets = [IPNetwork(row['network'])]
             country_iso_code = location['country_iso_code'] or location['continent_code']
-            fips_code = geoname2fips.get(location['geoname_id'])
+            if country_iso_code == "US" and location['subdivision_1_iso_code'] != "":
+                fips_code = location['subdivision_1_iso_code']
+            else:
+                fips_code = geoname2fips.get(location['geoname_id'])
             if fips_code is None:
                 logging.debug('Missing fips-10-4 for {}'.format(location['subdivision_1_name']))
                 fips_code = '00'
